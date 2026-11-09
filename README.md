@@ -2,6 +2,16 @@
 
 A quiet puzzle table built with Kotlin and Compose Multiplatform, sharing UI and puzzle logic between browser and desktop.
 
+[Play in your browser](https://stefanlobbenmeier.github.io/jigsaw-compose/) · [Source repository](https://github.com/StefanLobbenmeier/jigsaw-compose)
+
+## Features
+
+- Seeded complementary curved puzzle pieces with forgiving neighbor snapping.
+- Joined pieces move as one group anywhere on the table.
+- Two bundled royalty-free landscapes and private local image import.
+- Color, shape, and manual stash sorting; four grid sizes and reference guide.
+- Browser and JVM desktop share the same Compose UI and puzzle engine.
+
 ## Development
 
 Use Java 17 or newer. On the original development machine:
@@ -34,8 +44,16 @@ Toolchain references: [Compose 1.12.2 release](https://github.com/JetBrains/comp
 
 ## Playing
 
-Choose a bundled landscape or **Your image** (JPEG, PNG, or WebP; up to 20 MB and 36 megapixels). Imports are decoded locally and never uploaded. Select a grid size to start a new puzzle. Tap a stash thumbnail to place it on the table, then drag it into position. True neighbors snap together within roughly one fifth of a piece width, and connected groups move together. Groups can form anywhere on the table; the optional translucent guide is a reference, not an anchor.
+Choose a bundled landscape or **Your image** (JPEG, PNG, or WebP; up to 20 MB and 36 megapixels, with aspect ratio from 2:5 to 5:2). Imports are decoded locally and never uploaded. Select a grid size to start a new puzzle. Tap a stash thumbnail to place it on the table, then drag it into position. True neighbors snap together within roughly one fifth of a piece width, and connected groups move together. Groups can form anywhere on the table; the optional translucent guide is a reference, not an anchor.
 
 Sort the stash by sampled image color or tab/socket shape. The arrows on thumbnails move them manually. Select a table piece and use **Return group** to send its connected group back to the stash. **Scatter** spreads all pieces on the table, while **Restart** generates fresh cuts and returns every piece to the stash. Puzzles have no rotation or saved progress in this first version.
 
 See [image source and license details](IMAGE_CREDITS.md). The UI and engine are shared between desktop and browser; file picking is implemented separately for each platform.
+
+## Deployment and checks
+
+Every push to `main` runs engine tests and builds the production browser bundle, then deploys it to GitHub Pages via `.github/workflows/pages.yml`. Run the same checks locally with `./gradlew :composeApp:jvmTest :composeApp:jsBrowserDistribution`. The tests cover complementary geometry, valid and invalid snapping, group movement, completion, and stash ordering.
+
+The first browser load downloads the Compose/Skia runtime (about 11 MB before compression). This version needs a modern JavaScript/WebAssembly browser; progress is lost on reload, and there is no rotation, account, or cloud image storage. Android and iOS targets are not configured yet.
+
+Application code is MIT licensed; gallery photographs retain their separate Unsplash license.

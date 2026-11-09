@@ -50,6 +50,7 @@ private val photos = listOf(Photo("Alpine escape", "alpine.jpg", "Unsplash · ph
         try {
             val decoded = bytes.decodeToImageBitmap()
             require(decoded.width.toLong() * decoded.height <= 36_000_000) { "Choose an image under 36 megapixels." }
+            require(decoded.width.toFloat() / decoded.height in 0.4f..2.5f) { "Choose an image with an aspect ratio between 2:5 and 5:2. Crop very tall or wide images first." }
             image = decoded; title = name; credit = attribution; selected = null; sort = StashSort.MANUAL
             message = "Your table is ready. Tap a piece below to begin."
         } catch (e: Exception) { message = e.message ?: "This image format could not be opened. Try JPEG or PNG." }
